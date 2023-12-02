@@ -1,4 +1,6 @@
 out
 test*
 input*
-
+.ccls-cache
+build
+release
