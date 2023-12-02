@@ -2,6 +2,7 @@ add_executable(out main.cpp)
 
 get_filename_component(DayName ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 FILE(COPY input DESTINATION "${CMAKE_BINARY_DIR}/${DayName}")
+FILE(COPY test DESTINATION "${CMAKE_BINARY_DIR}/${DayName}")
 
 set(DEBUG_FLAGS "-ggdb" "-march=native" "-Wall" "-Wextra" "-Wpedantic" "-Werror"
 	"-fsanitize=address" "-fsanitize=leak")
