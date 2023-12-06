@@ -14,3 +14,4 @@ endif()
 find_package(benchmark REQUIRED)
 
 add_subdirectory(day02)
+add_subdirectory(day03)
