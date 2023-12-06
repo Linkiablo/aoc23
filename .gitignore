@@ -2,3 +2,4 @@ out
 .ccls-cache
 build
 release
+.cache
