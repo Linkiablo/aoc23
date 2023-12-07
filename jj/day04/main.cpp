@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -72,12 +73,12 @@ uint32_t card::get_copies() const {
 class cardstack {
   private:
     std::vector<card> cards;
-    uint32_t get_copies_total(uint32_t card_number);
+    std::vector<uint32_t> copy_count;
 
   public:
     cardstack(const std::string &input);
-    uint32_t part_one();
-    uint32_t part_two();
+    uint32_t get_score_total();
+    uint32_t get_copies_total();
 };
 
 cardstack::cardstack(const std::string &input) {
@@ -86,22 +87,24 @@ cardstack::cardstack(const std::string &input) {
     for (std::string line; std::getline(in, line);) {
         this->cards.emplace_back(card{line});
     }
+
+    this->copy_count.assign(this->cards.size(), 1);
 }
 
-uint32_t cardstack::get_copies_total(uint32_t card_number) {
-    auto copies = this->cards.at(card_number).get_copies();
-
-    auto res = 1;
-    if (copies > 0) {
+uint32_t cardstack::get_copies_total() {
+    for (const auto &[i, copies] : std::views::enumerate(this->copy_count)) {
         for (const auto v :
-             std::views::iota(card_number + 1, card_number + 1 + copies)) {
-            res += get_copies_total(v);
+             std::views::iota(i + 1, i + 1 + this->cards.at(i).get_copies())) {
+            this->copy_count[v] += copies;
         }
     }
-    return res;
+
+    return std::ranges::fold_left(this->copy_count.begin(),
+                                  this->copy_count.end(), 0,
+                                  std::plus<uint32_t>());
 }
 
-uint32_t cardstack::part_one() {
+uint32_t cardstack::get_score_total() {
     auto res = 0;
 
     for (const auto &c : this->cards)
@@ -110,20 +113,11 @@ uint32_t cardstack::part_one() {
     return res;
 }
 
-uint32_t cardstack::part_two() {
-    auto res = 0;
-
-    for (uint32_t i = 0; i < this->cards.size(); ++i)
-        res += get_copies_total(i);
-
-    return res;
-}
-
 int main() {
     cardstack cs{"input"};
 
-    std::cout << "part 1: " << cs.part_one() << '\n';
-    std::cout << "part 2: " << cs.part_two() << '\n';
+    std::cout << "part 1: " << cs.get_score_total() << '\n';
+    std::cout << "part 2: " << cs.get_copies_total() << '\n';
 
     return 0;
 }
