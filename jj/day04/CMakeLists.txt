@@ -6,8 +6,8 @@ FILE(COPY test DESTINATION "${CMAKE_BINARY_DIR}/${DayName}")
 add_executable(${DayName} main.cpp)
 
 set(DEBUG_FLAGS "-ggdb" "-march=native" "-Wall" "-Wextra" "-Wpedantic" "-Werror"
-	"-fsanitize=address" "-fsanitize=leak")
-set(RELEASE_FLAGS "-march=native" "-O2")
+	"-fsanitize=address" "-fsanitize=leak" "-ggdb")
+set(RELEASE_FLAGS "-march=native" "-O2" "-ggdb")
 
 target_compile_options(${DayName} PUBLIC
 	$<$<CONFIG:Debug>:${DEBUG_FLAGS}>
