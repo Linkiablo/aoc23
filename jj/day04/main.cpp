@@ -2,7 +2,6 @@
 #include <cstdint>
 #include <fstream>
 #include <iostream>
-#include <numeric>
 #include <ranges>
 #include <vector>
 
