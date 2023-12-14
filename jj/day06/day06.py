@@ -2,6 +2,21 @@ import math
 from dataclasses import dataclass
 from functools import reduce
 
+def get_number_of_ways(time: int, distance: int) -> int:
+    # res = sum(map(lambda x: 1 if x * (time - x) > distance else 0, range(time)))
+
+    # nullstellenberechnung
+    rhs = math.sqrt((time / 2)**2 - distance)
+
+    x1 = math.floor(-rhs + time / 2)
+    x2 = math.ceil(rhs + time / 2)
+
+    # anzahl der integer zw. x1 und x2
+    res = x2 - x1 - 1
+
+    # print(f"res: {res}")
+    return res
+
 @dataclass
 class Race:
     times = []
@@ -13,28 +28,11 @@ class Race:
             self.times = [int(part) for part in lines[0].split()[1:]]
             self.distances = [int(part) for part in lines[1].split()[1:]]
 
-    def get_number_of_ways(self, time, distance) -> int:
-        # res = sum(map(lambda x: 1 if x * (time - x) > distance else 0, range(time)))
-
-        # print(f"res: {res}")
-
-        # nullstellenberechnung
-        rhs = math.sqrt((time / 2)**2 - distance)
-
-        x1 = math.floor(-rhs + time / 2)
-        x2 = math.ceil(rhs + time / 2)
-
-        # anzahl der integer zw. x1 und x2
-        res = x2 - x1 - 1
-
-        print(f"res: {res}")
-
-        return res
 
     def part_one(self) -> int:
         res = []
         for time, distance in zip(self.times, self.distances):
-            res.append(self.get_number_of_ways(time, distance))
+            res.append(get_number_of_ways(time, distance))
 
         return reduce(lambda a, b: a * b, res)
 
@@ -47,7 +45,7 @@ class Race:
             large_time += time
             large_distance += distance
 
-        return self.get_number_of_ways(large_time, large_distance)
+        return get_number_of_ways(large_time, large_distance)
 
 if __name__ == "__main__":
     race = Race("input")
