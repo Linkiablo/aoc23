@@ -28,7 +28,6 @@ class Race:
             self.times = [int(part) for part in lines[0].split()[1:]]
             self.distances = [int(part) for part in lines[1].split()[1:]]
 
-
     def part_one(self) -> int:
         res = []
         for time, distance in zip(self.times, self.distances):
